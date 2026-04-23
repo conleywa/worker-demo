@@ -7,7 +7,7 @@ use worker_macros::event;
 async fn fetch(req: Request, env: Env, _ctx: Context) -> worker::Result<Response> {
     tracing::info!(request=?req,"Received request");
     Router::new()
-        .get_async("/user", user_get)
+        .get_async("/user:name", user_get)
         .post_async("/user", user_add)
         .run(req, env)
         .await

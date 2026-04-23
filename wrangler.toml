@@ -4,3 +4,17 @@ compatibility_date = "2026-04-22"
 
 [build]
 command = "cargo install worker-build && worker-build --release --panic-unwind"
+
+[[d1_datebases]]
+binding = "demo_user_d1"
+database_name = "demo_user_d1"
+database_id = ""
+
+[[queues.producers]]
+queue = "demo_user_queue"
+binding = "demo_user_queue"
+
+[[queues.consumers]]
+queue = "demo_user_queue"
+max_batch_size = 10
+max_batch_timeout = 30

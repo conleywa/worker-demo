@@ -4,9 +4,9 @@ use worker_macros::event;
 
 #[event(queue)]
 async fn consume(message_batch: MessageBatch<User>, env: Env, _ctx: Context) -> worker::Result<()> {
-    // Deserialize the message batch
     let messages = message_batch.messages()?;
-    // Loop through the messages
+    let db = env.d1("demo_user_d1")?;
+
     for message in messages {
         tracing::info!(
             "Got message {:?}, with id {} and timestamp: {}",
@@ -14,15 +14,13 @@ async fn consume(message_batch: MessageBatch<User>, env: Env, _ctx: Context) -> 
             message.id(),
             message.timestamp().to_string()
         );
-        let db = env.d1("demo_user_d1")?;
-        let statement =
-            db.prepare("INSERT INTO t_user (name, birthday, created_at) VALUES (?1, ?2, ?3)");
         let user = message.body();
-        let result = statement
+        let result = db
+            .prepare("INSERT INTO t_user (name, birthday, created_at) VALUES (?1, ?2, ?3)")
             .bind(&[
                 user.name.clone().into(),
                 user.birthday.into(),
-                user.crate_at.into(),
+                user.created_at.into(),
             ])?
             .run()
             .await?;

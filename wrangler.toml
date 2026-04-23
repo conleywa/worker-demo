@@ -1,20 +1,20 @@
-name = "order-proxy"
+name = "worker-demo"
 main = "build/index.js"
 compatibility_date = "2026-04-22"
 
 [build]
-command = "cargo install worker-build && worker-build --release --panic-unwind"
+command = "cargo install worker-build && worker-build --release"
 
-[[d1_datebases]]
+[[d1_databases]]
 binding = "demo_user_d1"
 database_name = "demo_user_d1"
-database_id = ""
+database_id = "fc7b6839-a450-4228-a09e-b47c7c1cf77a"
 
 [[queues.producers]]
-queue = "demo_user_queue"
+queue = "demo-user-queue"
 binding = "demo_user_queue"
 
 [[queues.consumers]]
-queue = "demo_user_queue"
+queue = "demo-user-queue"
 max_batch_size = 10
 max_batch_timeout = 30
